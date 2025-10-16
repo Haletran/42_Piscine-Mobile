@@ -2,8 +2,6 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
-
-
   function handleButtonPress() {
     if (textvalue === "Hello World") {
       setTextValue("A simple text");

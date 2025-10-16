@@ -23,9 +23,9 @@
           echo "Development environment ready!"
           echo "Node: $(node --version)"
           echo "pnpm: $(pnpm --version)"
-          # if [ ! -d "node_modules" ]; then
-          #   pnpm install
-          # fi
+          if [ ! -d "node_modules" ]; then
+            pnpm install
+          fi
         '';
       };
     };

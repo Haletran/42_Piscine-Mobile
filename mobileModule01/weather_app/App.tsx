@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { PaperProvider, Appbar, Searchbar, BottomNavigation } from 'react-native-paper';
 import { useState } from 'react';
-import * as Location from 'expo-location';
 
 export function TopBar({ searchQuery, setSearchQuery, onLocationPress }: any) {
   return (
@@ -52,30 +51,9 @@ export default function App() {
     { key: 'weekly', title: 'Weekly', focusedIcon: 'calendar-multiselect' },
   ]);
 
+
   const handleLocationPress = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission denied');
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced,
-      });
-      let geocode = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
-      });
-      
-      if (geocode.length > 0) {
-        const address = geocode[0];
-        const cityName = address.city || address.subregion || address.region || 'Unknown';
-        setCurrentCity(cityName);
-        setSearchQuery('');
-      }
-    } catch (error) {
-      console.error('Error getting location:', error);
-    }
+    setCurrentCity("Geolocalisation")
   };
 
   const renderScene = BottomNavigation.SceneMap({

@@ -1,39 +1,86 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, useWindowDimensions } from 'react-native';
 import row_layout from './assets/layout.json';
-import { useState } from 'react';
+import { use, useState, useEffect } from 'react';
+import React from "react";
+import * as ScreenOrientation from 'expo-screen-orientation';
+
+export class AppBar extends React.Component {
+  render() {
+    return (
+      <View style={styles.appbar}>
+        <Text style={styles.title}>Calculator</Text>
+      </View>
+    );
+  }
+}
 
 export default function App() {
-
   const rows = row_layout.rows;
   const [textvalue, setTextValue] = useState('0');
+  const { width, height } = useWindowDimensions();
+  
+  const isLandscape = width > height;
+  const numCols = 5;
+  const numRows = 5;
+  const marginSize = isLandscape ? 1 : 5;
+  
+  const buttonSize = isLandscape 
+    ? Math.min(
+        (width - (marginSize * 2 * numCols + 10)) / numCols,
+        (height - 170 - (marginSize * 2 * numRows + 10)) / numRows
+      )
+    : Math.min((width - 60) / 5, 70);
+  
+  
+  useEffect(() => {
+    async function unlockOrientation() {
+      await ScreenOrientation.unlockAsync();
+    }
+    unlockOrientation();
+  }, []);
 
   function handleButtonPress(value: any) {
     console.log(`button pressed :${value}`);
     setTextValue(value);
   }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Calculator</Text>
-      <View style={styles.grid}>
+return (
+    <View style={{ flex: 1, backgroundColor: '#37474F' }}>
+      <AppBar />
         <Text style={styles.render_box}>{textvalue}</Text>
+        <Text style={styles.render_box}>{textvalue}</Text>
+      <View style={[
+        styles.grid, 
+        isLandscape && { 
+          paddingHorizontal: 2,
+          paddingVertical: 2,
+          justifyContent: 'space-evenly',
+          gap: 0
+        }
+      ]}>
         {rows.map((row, rowIndex) => (
-          <View key={rowIndex} style={{ flexDirection: 'row' }}>
+          <View key={rowIndex} style={{ 
+            flexDirection: 'row',
+            justifyContent: isLandscape ? 'space-evenly' : 'center',
+            width: '100%'
+          }}>
             {row.map((item, itemIndex) => (
               <Pressable
                 key={itemIndex}
                 style={{
-                  width: 70,
-                  height: 70,
+                  width: buttonSize,
+                  height: buttonSize,
                   backgroundColor: '#607D8B',
-                  margin: 5,
+                  margin: marginSize,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  borderRadius: 10,
                 }}
                 onPress={() => handleButtonPress(item.value)}
               >
-                <Text style={{ fontSize: 24, color: '#35444bff' }}>
+                <Text style={{ 
+                  fontSize: isLandscape ? 18 : 24, 
+                  color: ('color' in item && typeof item.color === 'string') ? item.color : '#35444bff' 
+                }}>
                   {typeof item === 'object' ? item.value || item.label || '' : item}
                 </Text>
               </Pressable>
@@ -42,34 +89,31 @@ export default function App() {
         ))}
       </View>
     </View>
-  );            
-}    
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#485E68',
+  appbar: {
+    backgroundColor: '#607D8B',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 40,
     paddingBottom: 20,
   },
-  grid : {
-    justifyContent: 'center',
+  grid: {
+    flex: 1,
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#607D8B',
   },
   render_box: {
-    width: 340,
-    height: 80,
-    backgroundColor: '#35444bff',
-    color: '#ffffff',
+    color: '#607D8B',
     fontSize: 40,
-    padding: 10,
     textAlign: 'right',
-    margin: 5,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    borderRadius: 10,
   },
   title: {
     color: '#fff',

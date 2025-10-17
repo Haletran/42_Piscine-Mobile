@@ -4,8 +4,8 @@
       { "label": "7", "type": "number", "value": 7 },
       { "label": "8", "type": "number", "value": 8 },
       { "label": "9", "type": "number", "value": 9 },
-      { "label": "AC", "type": "reset", "value": "AC" },
-      { "label": "C", "type": "clear", "value": "C" }
+      { "label": "AC", "type": "reset", "value": "AC", "color": "#ff0000" },
+      { "label": "C", "type": "clear", "value": "C", "color": "#ff0000" }
     ],
     [
       { "label": "4", "type": "number", "value": 4 },
@@ -26,6 +26,7 @@
       { "label": ".", "type": "decimal", "value": "." },
       { "label": "00", "type": "number", "value": "00" },
       { "label": "=", "type": "equals", "value": "=" },
+      { "label": "", "type": "", "value": "" }
     ]
   ]
 }

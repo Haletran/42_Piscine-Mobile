@@ -16,7 +16,8 @@ export class AppBar extends React.Component {
 
 export default function App() {
   const rows = row_layout.rows;
-  const [textvalue, setTextValue] = useState('0');
+  const [calcul, setCalculValue] = useState('');
+  const [result, setResultValue] = useState('');
   const { width, height } = useWindowDimensions();
   
   const isLandscape = width > height;
@@ -40,15 +41,43 @@ export default function App() {
   }, []);
 
   function handleButtonPress(value: any) {
-    console.log(`button pressed :${value}`);
-    setTextValue(value);
+    if (value === 'C' || value === 'AC') {
+      setCalculValue('');
+      setResultValue('');
+      return;
+    }
+    if (result !== '' && value !== '=') {
+      setCalculValue(String(result));
+      setResultValue('');
+    }
+    if (value === 'DEL') {
+      if (result !== '') {
+        setCalculValue((prev) => (prev.length > 0 ? prev.slice(0, -1) : ''));
+      } else {
+        setCalculValue('');
+        setResultValue('');
+      }
+      return;
+    }
+
+    if (value === '=') {
+      try {
+        const result =
+          Function('"use strict";return (' + calcul + ')')();
+        setResultValue(String(result));
+      } catch (error) {
+        setResultValue('Error');
+      }
+      return;
+    }
+    setCalculValue((prev) => (prev === '0' && value !== '.' ? String(value) : prev + String(value)));
   }
 
 return (
     <View style={{ flex: 1, backgroundColor: '#37474F' }}>
       <AppBar />
-        <Text style={styles.render_box}>{textvalue}</Text>
-        <Text style={styles.render_box}>{textvalue}</Text>
+        <Text style={styles.render_box}>{calcul}</Text>
+        <Text style={styles.render_box}>{result}</Text>
       <View style={[
         styles.grid, 
         isLandscape && { 
@@ -111,10 +140,11 @@ const styles = StyleSheet.create({
   },
   render_box: {
     color: '#607D8B',
-    fontSize: 40,
+    fontSize: 30,
     textAlign: 'right',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+    right: 5,
   },
   title: {
     color: '#fff',

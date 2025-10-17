@@ -26,7 +26,7 @@
       { "label": ".", "type": "decimal", "value": "." },
       { "label": "00", "type": "number", "value": "00" },
       { "label": "=", "type": "equals", "value": "=" },
-      { "label": "", "type": "", "value": "" }
+      { "label": "DEL", "type": "", "value": "DEL" }
     ]
   ]
 }

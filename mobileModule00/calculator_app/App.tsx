@@ -51,14 +51,9 @@ export default function App() {
       setResultValue('');
     }
     if (value === 'DEL') {
-      if (result !== '') {
-        setCalculValue((prev) => (prev.length > 0 ? prev.slice(0, -1) : ''));
-      } else {
-        setCalculValue('');
-        setResultValue('');
-      }
+      setCalculValue((prev) => (prev.length > 0 ? prev.slice(0, -1) : ''));
       return;
-    }
+    } 
 
     if (value === '=') {
       try {
@@ -83,7 +78,6 @@ return (
         isLandscape && { 
           paddingHorizontal: 2,
           paddingVertical: 2,
-          justifyContent: 'space-evenly',
           gap: 0,
         }, 
       ]}>

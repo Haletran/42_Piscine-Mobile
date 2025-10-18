@@ -54,7 +54,6 @@ return (
         isLandscape && { 
           paddingHorizontal: 2,
           paddingVertical: 2,
-          justifyContent: 'space-evenly',
           gap: 0,
         }, 
       ]}>
